@@ -18,7 +18,35 @@ public class Program {
 		//showDepartment();
 		//insertSeller();
 		//insertSeller2();
-		insertDepartment();
+		//insertDepartment();
+		UpdateSellerSalary();
+	}
+	public static void UpdateSellerSalary() {
+		Connection conn = null;
+		PreparedStatement st = null;
+		try {
+			conn = DB.getConnection();
+			String sql = "UPDATE seller "
+					+ "Set BaseSalary = BaseSalary + ? "
+					+ "WHERE "
+					+ "(DepartmentId = ?) ";
+			
+			st = conn.prepareStatement(sql);
+			
+			st.setDouble(1, 200.0);
+			st.setInt(2, 2);
+			
+			int rowsAffected = st.executeUpdate();
+			
+			System.out.println("Done! Rows affected:" + rowsAffected);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DB.closeStatemet(st);
+			DB.closeConnection();
+		}
 	}
 	public static void insertDepartment() {
 		Connection conn = null;
