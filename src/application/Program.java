@@ -17,8 +17,46 @@ public class Program {
 		
 		//showDepartment();
 		//insertSeller();
-		insertSeller2();
-		
+		//insertSeller2();
+		insertDepartment();
+	}
+	public static void insertDepartment() {
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement st = null;
+		try {
+			conn = DB.getConnection();
+			
+			String sql = "INSERT INTO department "
+					+ " (Name)"
+					+ " VALUES "
+					+ "('D1'), ('D2')";
+								
+			st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			
+			
+			int rowAffeccted = st.executeUpdate();
+			
+			if (rowAffeccted > 0 ) {
+				rs =  st.getGeneratedKeys();
+				while (rs.next()) {
+					int id = rs.getInt(1);
+					System.out.println("Done! Id = " + id);
+				}
+			}
+			else {
+				System.out.println("No rown affected.");
+			}
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatemet(st);
+			DB.closeConnection();
+		}
 	}
 	
 	public static void insertSeller2() {
